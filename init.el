@@ -52,8 +52,6 @@
 (use-package go-mode
   :ensure t)
 
-(use-package company
-  :ensure t)
 (use-package company-go
   :ensure t)
 
