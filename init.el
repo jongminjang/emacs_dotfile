@@ -5,6 +5,7 @@
 
 (require 'package)
 (setq package-enable-at-startup nil)
+(setq package-archives nil)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives
@@ -23,6 +24,7 @@
 (load "desktop-management")
 
 (require 'use-package)
+(setq use-package-verbose t)
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
@@ -33,6 +35,7 @@
 
 (use-package markdown-mode
   :ensure t
+  :defer t
   :config
   (progn
     (push '("\\.text\\'" . markdown-mode) auto-mode-alist)
@@ -99,6 +102,12 @@
   :ensure t
   :bind ("C-h b" . helm-descbinds))
 
+(use-package company-tern
+  :ensure t
+  :config (progn
+	    (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+	    (add-to-list 'company-backends 'company-tern)))
+
 (use-package smartparens
   :ensure t
   :init
@@ -106,8 +115,7 @@
 	 (smartparens-global-mode t)
 	 (show-smartparens-global-mode t))
   :config
-  (progn (sp-use-smartparens-bindings)
-	 (message "sp config"))
+  (progn (sp-use-smartparens-bindings))
   :bind (:map smartparens-mode-map ("M-<backspace>" . nil)))
 
 ;;(define-key smartparens-mode-map (kbd "M-<backspace>") nil)
@@ -119,7 +127,7 @@
   :ensure t
   :config
   (global-undo-tree-mode))
-
+  
 ; (use-package linum-relative
 ;   :config 
 ;   (helm-linum-relative-mode 1)
