@@ -70,10 +70,20 @@
 ;; go get -u github.com/nsf/gocode
 (use-package company-go
   :init
-  (progn (add-hook 'go-mode-hook (lambda()
-				   (set (make-local-variable 'company-backends) '(company-go)))))
+  (progn
+    (add-hook
+     'go-mode-hook
+     (lambda()
+       (set (make-local-variable 'company-backends) '(company-go)))))
   :ensure t
   )
+
+;; gometalinter
+(use-package flycheck-gometalinter
+  :ensure t
+  :config
+  (progn
+    (flycheck-gometalinter-setup)))
 
 ;; (use-package color-moccur
 ;;   :commands (isearch-moccur isearch-all)
@@ -91,8 +101,9 @@
   :config
   (progn
     (global-flycheck-mode)
-    (add-to-list 'load-path "~/goprojects/src/github.com/dougm/goflymake")
-    (require 'go-flycheck)))
+    ;;(add-to-list 'load-path "~/goprojects/src/github.com/dougm/goflymake")
+    ;;(require 'go-flycheck)
+    ))
 
 ;;; 뭔가 잘못되었을때 helm 이 켜져 있으면 엄청 짜증난다. 마지막에 켜도록 하자
 (use-package helm
