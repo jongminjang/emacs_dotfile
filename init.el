@@ -30,8 +30,11 @@
   :if (memq window-system '(mac ns))
   :ensure t
   :config
-  (progn   (exec-path-from-shell-copy-env "GOPATH")
-	   (exec-path-from-shell-initialize)))
+  (progn
+     (print "exec path from shell")
+     (add-to-list 'exec-path-from-shell-variables "GOPATH")
+	   (exec-path-from-shell-initialize)
+     ))
 
 (use-package markdown-mode
   :ensure t
@@ -64,6 +67,14 @@
   :ensure t
   :mode ("\\.go$" . go-mode))
 
+;; go get -u github.com/nsf/gocode
+(use-package company-go
+  :init
+  (progn (add-hook 'go-mode-hook (lambda()
+				   (set (make-local-variable 'company-backends) '(company-go)))))
+  :ensure t
+  )
+
 ;; (use-package color-moccur
 ;;   :commands (isearch-moccur isearch-all)
 ;;   :bind (("M-s O" . moccur)
@@ -74,9 +85,6 @@
 ;;   (setq isearch-lazy-highlight t)
 ;;   :config
 ;;   (use-package moccur-edit))
-
-(use-package company-go
-  :ensure t)
 
 (use-package flycheck
   :ensure t
