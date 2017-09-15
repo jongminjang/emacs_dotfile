@@ -3,6 +3,8 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
+(setq prefer-coding-system "UTF-8")
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives nil)
@@ -35,6 +37,7 @@
   :config
   (progn
      (add-to-list 'exec-path-from-shell-variables "GOPATH")
+     (add-to-list 'exec-path-from-shell-variables "LANG")
 	   (exec-path-from-shell-initialize)
      ))
 
@@ -54,6 +57,16 @@
 
 (add-hook 'find-file-hook 'my-linum-mode-hook)
 
+(use-package expand-region
+  :ensure t
+  :bind
+  (("C-=" . er/expand-region)))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  ("C-S-c C-S-c" . mc/edit-lines)
+  ("C->" . mc/mark-next-like-this))
 
 (use-package crux
   :ensure t
