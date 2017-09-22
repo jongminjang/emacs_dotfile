@@ -181,6 +181,8 @@
 
 ;; (show-paren-mode)
 
+(use-package nodejs-repl)
+
 (global-set-key (kbd "C-z") 'ignore)
 
 (load "motion-and-kill-dwim")
