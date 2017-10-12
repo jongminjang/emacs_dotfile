@@ -3,7 +3,11 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	backward-kill-dwim
+	crux-move-beginning-of-line
 	helm-M-x
+	mouse-set-region
+	toggle-korean-input-method
 	))
 
 (setq mc/cmds-to-run-once

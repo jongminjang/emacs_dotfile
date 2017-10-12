@@ -1,4 +1,4 @@
-elpa/**/*
+/elpa/
 auto-save-list/**/*
 *~
 eshell/**/*
@@ -6,3 +6,8 @@ history
 recentf
 savehist
 .DS_Store
+*~
+\#*\#
+*.elc
+
+
