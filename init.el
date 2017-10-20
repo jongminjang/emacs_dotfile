@@ -3,6 +3,7 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
+(set-language-environment "Korean")
 (setq prefer-coding-system "UTF-8")
 
 (require 'package)
