@@ -71,7 +71,9 @@
 
 (use-package crux
   :ensure t
-  :bind (("C-a" . crux-move-beginning-of-line)))
+  :bind (("C-a" . crux-move-beginning-of-line)
+	 ("M-o" . crux-smart-open-line)
+	 ("M-O" . crux-smart-open-line-above)))
 
 (use-package company
   :ensure t
@@ -167,7 +169,10 @@
   (progn (sp-use-smartparens-bindings))
   ;; smartparens에서 M-<backspace>가 unwrap 함수를 수행하는건
   ;; 아무래도 적응이 안된다. 그래서 제거한다.
-  :bind (:map smartparens-mode-map ("M-<backspace>" . nil)))
+  :bind (:map smartparens-mode-map
+	      ("M-<backspace>" . nil)
+	      ("C-c C-u" . sp-unwrap-sexp)
+	      ("C-c M-<backspace>" . sp-unwrap-sexp)))
 
 ;;(define-key smartparens-mode-map (kbd "M-<backspace>") nil)
 

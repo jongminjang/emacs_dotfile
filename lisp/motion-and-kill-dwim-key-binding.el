@@ -28,3 +28,4 @@
 
 (global-set-key "\C-w" 'kill-region-dwim)
 (global-set-key "\M-w" 'copy-region-as-kill-dwim)
+(global-set-key "\M-k" 'forward-kill-dwim)
