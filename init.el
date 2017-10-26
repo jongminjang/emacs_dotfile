@@ -130,7 +130,8 @@
 ;;   (use-package moccur-edit))
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package flycheck
   :ensure t
@@ -175,7 +176,8 @@
   :bind (:map smartparens-mode-map
 	      ("M-<backspace>" . nil)
 	      ("C-c C-u" . sp-unwrap-sexp)
-	      ("C-c M-<backspace>" . sp-unwrap-sexp)))
+	      ("C-c M-<backspace>" . sp-unwrap-sexp)
+	      ("C-c C-<backspace>" . sp-unwrap-sexp)))
 
 ;;(define-key smartparens-mode-map (kbd "M-<backspace>") nil)
 
@@ -190,10 +192,13 @@
 
 ;; (show-paren-mode)
 
-(use-package nodejs-repl)
+(use-package nodejs-repl
+  :ensure t
+  :defer t)
 
 (use-package web-mode
   :ensure t
+  :defer t
   :config (progn (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 		 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 		 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
