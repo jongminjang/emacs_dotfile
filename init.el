@@ -4,7 +4,10 @@
 (load custom-file)
 
 (set-language-environment "Korean")
-(setq prefer-coding-system "UTF-8")
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -26,8 +29,8 @@
 (load "disable-mouse")
 (load "desktop-management")
 
-;; use-package에 빈 config가 있는것은 
-;; config가 있어야만 실행되었음을 알리는 메시지가 나오기 때문에 
+;; use-package에 빈 config가 있는것은
+;; config가 있어야만 실행되었음을 알리는 메시지가 나오기 때문에
 ;; caveman debugging을 하기 위해 내가 넣어 둔 것이다.
 (require 'use-package)
 (setq use-package-verbose t)
@@ -83,16 +86,31 @@
 (use-package go-mode
   :defer t
   :ensure t
+  :config (progn
+	    (add-hook 'go-mode-hook
+		      (lambda()
+			(go-eldoc-setup)
+			(require 'go-guru)
+			(go-guru-hl-identifier-mode)
+			(set (make-local-variable 'company-backends) '(company-go)))))
   :mode ("\\.go$" . go-mode))
+
+(use-package go-guru
+  :ensure t
+  :defer t)
+
+(use-package go-eldoc
+  :ensure t
+  :defer t)
 
 ;; go get -u github.com/nsf/gocode
 (use-package company-go
   :init
-  (progn
-    (add-hook
-     'go-mode-hook
-     (lambda()
-       (set (make-local-variable 'company-backends) '(company-go)))))
+  ;; (progn
+  ;;   (add-hook
+  ;;    'go-mode-hook
+  ;;    (lambda()
+  ;;      (set (make-local-variable 'company-backends) '(company-go)))))
   :ensure t
   :defer t)
 
@@ -114,6 +132,7 @@
 (use-package flycheck-gometalinter
   :ensure t
   :defer t
+  :config (progn (setq flycheck-gometalinter-disable-all t))
   :init
   (progn
     (add-hook 'go-mode-hook 'flycheck-gometalinter-setup)))
@@ -199,7 +218,7 @@
 (use-package web-mode
   :ensure t
   :defer t
-  :config (progn (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  :init (progn (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 		 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 		 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
 		 (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
