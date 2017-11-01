@@ -1,5 +1,9 @@
 ;;; init.el --- my custom configuration for emacs
 
+(setq inhibit-splash-screen t)
+(add-to-list 'default-frame-alist '(height . 54))
+(add-to-list 'default-frame-alist '(width . 100))
+
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
@@ -89,19 +93,23 @@
   :config (progn
 	    (add-hook 'go-mode-hook
 		      (lambda()
-			(go-eldoc-setup)
+			;; goimports
+			(setq gofmt-command "goimports")
 			(require 'go-guru)
 			(go-guru-hl-identifier-mode)
-			(set (make-local-variable 'company-backends) '(company-go)))))
+			(set (make-local-variable 'company-backends) '(company-go))))
+	    (add-hook 'before-save-hook 'gofmt-before-save))
   :mode ("\\.go$" . go-mode))
 
+;; go get   golang.org/x/tools/cmd/guru
 (use-package go-guru
   :ensure t
   :defer t)
 
 (use-package go-eldoc
   :ensure t
-  :defer t)
+  :defer t
+  :init (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 ;; go get -u github.com/nsf/gocode
 (use-package company-go
@@ -120,7 +128,7 @@
   :defer t
   :init
   (progn
-    (add-hook 'js-mode-hook (lambda () 
+    (add-hook 'js-mode-hook (lambda ()
       (tern-mode t)
       (add-to-list 'company-backends 'company-tern))))
   )
@@ -184,12 +192,10 @@
 
 (use-package smartparens
   :ensure t
-  :init
-  (progn (require 'smartparens-config)
-	 (smartparens-global-mode t)
-	 (show-smartparens-global-mode t))
-  :config
-  (progn (sp-use-smartparens-bindings))
+  :init (progn (require 'smartparens-config)
+	       (smartparens-global-mode t)
+	       (show-smartparens-global-mode t))
+  :config (progn (sp-use-smartparens-bindings))
   ;; smartparens에서 M-<backspace>가 unwrap 함수를 수행하는건
   ;; 아무래도 적응이 안된다. 그래서 제거한다.
   :bind (:map smartparens-mode-map
@@ -229,7 +235,8 @@
 
 (use-package zenburn-theme
   :ensure t
-  :config (load-theme 'zenburn))
+  :config (progn (load-theme 'zenburn)
+		 (set-face-attribute 'region nil :background "#666")))
 
 (global-set-key (kbd "C-z") 'ignore)
 
