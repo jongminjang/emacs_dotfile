@@ -78,9 +78,10 @@
 
 (use-package crux
   :ensure t
-  :bind (("C-a" . crux-move-beginning-of-line)
-	 ("M-o" . crux-smart-open-line)
-	 ("M-O" . crux-smart-open-line-above)))
+  :bind
+  ("C-a" . crux-move-beginning-of-line)
+  ("M-o" . crux-smart-open-line)
+  ("M-O" . crux-smart-open-line-above))
 
 (use-package company
   :ensure t
