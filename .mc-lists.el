@@ -6,8 +6,10 @@
 	backward-kill-dwim
 	crux-move-beginning-of-line
 	helm-M-x
+	ignore
 	mouse-set-region
 	toggle-korean-input-method
+	xref-find-apropos
 	))
 
 (setq mc/cmds-to-run-once

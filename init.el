@@ -30,7 +30,8 @@
 (defalias 'pl 'package-list-packages)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(load "disable-mouse")
+(if (memq window-system '(mac ns))
+(load "disable-mouse"))
 (load "desktop-management")
 
 ;; use-package에 빈 config가 있는것은
