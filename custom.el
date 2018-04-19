@@ -11,7 +11,7 @@
  '(minibuffer-prompt-properties (quote (cursor-intangible t face minibuffer-prompt)))
  '(package-selected-packages
    (quote
-    (xclip use-package go-mode go-guru go-eldoc monokai-theme nodejs-repl multiple-cursors-mode expand-region flycheck-gometalinter company-tern helm-descbinds color-moccur smartparens-mode undo-tree web-mode multiple-cursors smartparens magit flycheck exec-path-from-shell company-go company company-mode linum-relative crux helm markdown-mode)))
+    (zenburn-theme rjsx-mode xclip use-package go-mode go-guru go-eldoc monokai-theme nodejs-repl multiple-cursors-mode expand-region flycheck-gometalinter company-tern helm-descbinds color-moccur smartparens-mode undo-tree web-mode multiple-cursors smartparens magit flycheck exec-path-from-shell company-go company company-mode linum-relative crux helm markdown-mode)))
  '(xclip-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

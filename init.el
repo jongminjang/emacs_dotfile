@@ -74,8 +74,8 @@
 (use-package multiple-cursors
   :ensure t
   :bind
-  ("C-S-c C-S-c" . mc/edit-lines)
-  ("C->" . mc/mark-next-like-this))
+  ("C-c l" . mc/edit-lines)
+  ("C-c n" . mc/mark-next-like-this))
 
 (use-package crux
   :ensure t
