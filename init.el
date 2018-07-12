@@ -125,15 +125,15 @@
   :defer t)
 
 ;; company for javascript
-(use-package company-tern
-  :ensure t
-  :defer t
-  :init
-  (progn
-    (add-hook 'js-mode-hook (lambda ()
-      (tern-mode t)
-      (add-to-list 'company-backends 'company-tern))))
-  )
+;; (use-package company-tern
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (progn
+;;     (add-hook 'js-mode-hook (lambda ()
+;;       (tern-mode t)
+;;       (add-to-list 'company-backends 'company-tern))))
+;;   )
 
 ;; gometalinter
 ;; go get -u gopkg.in/alecthomas/gometalinter.v1
