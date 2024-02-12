@@ -1,8 +1,8 @@
-;;; init.el --- my custom configuration for emacs
+;;; Init.el --- my custom configuration for emacs  -*- lexical-binding: t; -*-
 
 (setq inhibit-splash-screen t)
 (add-to-list 'default-frame-alist '(height . 54))
-(add-to-list 'default-frame-alist '(width . 100))
+(add-to-list 'default-frame-alist '(width . 150))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -12,6 +12,10 @@
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
+
+(global-display-line-numbers-mode)
+(line-number-mode)
+(column-number-mode)
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -59,13 +63,6 @@
     (push '("\\.markdown\\'" . markdown-mode) auto-mode-alist)
     (push '("\\.md\\'" . markdown-mode) auto-mode-alist)))
 
-(setq linum-format "%4d")
-
-(defun my-linum-mode-hook ()
-  (linum-mode t))
-
-(add-hook 'find-file-hook 'my-linum-mode-hook)
-
 (use-package expand-region
   :ensure t
   :bind
@@ -89,93 +86,6 @@
   :config
   (add-hook 'after-init-hook 'global-company-mode))
 
-(use-package go-mode
-  :defer t
-  :ensure t
-  :config (progn
-	    (add-hook 'go-mode-hook
-		      (lambda()
-			;; goimports
-			(setq gofmt-command "goimports")
-			(require 'go-guru)
-			(go-guru-hl-identifier-mode)
-			(set (make-local-variable 'company-backends) '(company-go))))
-	    (add-hook 'before-save-hook 'gofmt-before-save))
-  :mode ("\\.go$" . go-mode))
-
-;; go get   golang.org/x/tools/cmd/guru
-(use-package go-guru
-  :ensure t
-  :defer t)
-
-(use-package go-eldoc
-  :ensure t
-  :defer t
-  :init (add-hook 'go-mode-hook 'go-eldoc-setup))
-
-;; go get -u github.com/nsf/gocode
-(use-package company-go
-  :init
-  ;; (progn
-  ;;   (add-hook
-  ;;    'go-mode-hook
-  ;;    (lambda()
-  ;;      (set (make-local-variable 'company-backends) '(company-go)))))
-  :ensure t
-  :defer t)
-
-;; company for javascript
-;; (use-package company-tern
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   (progn
-;;     (add-hook 'js-mode-hook (lambda ()
-;;       (tern-mode t)
-;;       (add-to-list 'company-backends 'company-tern))))
-;;   )
-
-;; gometalinter
-;; go get -u gopkg.in/alecthomas/gometalinter.v1
-;; make link gometalinter that refers .v1
-;; gometalinter --install
-(use-package flycheck-gometalinter
-  :ensure t
-  :defer t
-  :config
-  ;; (progn (setq flycheck-gometalinter-disable-all t)
-  ;; 		 (flycheck-gometalinter-setup))
-  (flycheck-gometalinter-setup)
-  :init
-  ;; skips 'vendor' directories and sets GO15VENDOREXPERIMENT=1
-  (setq flycheck-gometalinter-vendor t)
-  ;; only show errors
-  (setq flycheck-gometalinter-errors-only t)
-  ;; only run fast linters
-  (setq flycheck-gometalinter-fast t)
-  ;; use in tests files
-  (setq flycheck-gometalinter-test t)
-  ;; disable linters
-  (setq flycheck-gometalinter-disable-linters '("gotype" "gocyclo"))
-  ;; Only enable selected linters
-  (setq flycheck-gometalinter-disable-all t)
-  (setq flycheck-gometalinter-enable-linters '("golint"))
-  ;; Set different deadline (default: 5s)
-  (setq flycheck-gometalinter-deadline "10s")
-  ;; (progn
-  ;;   (add-hook 'go-mode-hook 'flycheck-gometalinter-setup))
-  )
-
-;; (use-package color-moccur
-;;   :commands (isearch-moccur isearch-all)
-;;   :bind (("M-s O" . moccur)
-;;          :map isearch-mode-map
-;;          ("M-o" . isearch-moccur)
-;;          ("M-O" . isearch-moccur-all))
-;;   :init
-;;   (setq isearch-lazy-highlight t)
-;;   :config
-;;   (use-package moccur-edit))
 
 (use-package magit
   :ensure t
@@ -193,23 +103,58 @@
 
 ;;; 뭔가 잘못되었을때 helm 이 켜져 있으면 엄청 짜증난다. 마지막에 켜도록 하자
 ;; bind 된 명령이 실행되는 시점에 helm이 로딩되고 config가 수행된다.
-(use-package helm
-  :ensure t
-  :init (progn
-      (setq helm-buffers-fuzzy-matching t)
-      (helm-mode 1)
-      )
-  :bind (("C-x C-f" . helm-find-files)
-         ("C-x f" . helm-recentf)
-         ("M-y" . helm-show-kill-ring)
-      	 ("M-x" . helm-M-x)
-         ("C-x b" . helm-buffers-list)))
+;; (use-package helm
+;;   :ensure t
+;;   :init (progn
+;;       (setq helm-buffers-fuzzy-matching t)
+;;       (helm-mode 1)
+;;       )
+;;   :bind (("C-x C-f" . helm-find-files)
+;;          ("C-x f" . helm-recentf)
+;;          ("M-y" . helm-show-kill-ring)
+;;       	 ("M-x" . helm-M-x)
+;;          ("C-x b" . helm-buffers-list)))
 
-(use-package helm-descbinds
+;; (use-package helm-descbinds
+;;   :ensure t
+;;   :bind ("C-h b" . helm-descbinds)
+;;   :config
+;; )
+
+(use-package ivy
   :ensure t
-  :bind ("C-h b" . helm-descbinds)
   :config
-)
+  (progn 
+    (ivy-mode)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-count-format "(%d/%d)")
+    ;; enable this if you want `swiper' to use it
+    ;; (setq search-default-mode #'char-fold-to-regexp)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "<f6>") 'ivy-resume)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+    (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+    (global-set-key (kbd "<f1> l") 'counsel-find-library)
+    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+    (global-set-key (kbd "C-c g") 'counsel-git)
+    (global-set-key (kbd "C-c j") 'counsel-git-grep)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
+    (global-set-key (kbd "C-x l") 'counsel-locate)
+    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+    ))
+
+(use-package counsel
+  :ensure t
+  :config
+  (progn (counsel-mode 1)
+	 ))
 
 (use-package smartparens
   :ensure t
@@ -233,14 +178,16 @@
 (use-package undo-tree
   :ensure t
   :config
-  (global-undo-tree-mode))
+  (progn 
+	 (global-undo-tree-mode)
+	 (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+	 ))
   
+;; optional if you want which-key integration
+;; (use-package which-key
+;;     :config
+;;     (which-key-mode))
 
-;; (show-paren-mode)
-
-(use-package nodejs-repl
-  :ensure t
-  :defer t)
 
 (use-package web-mode
   :ensure t
@@ -254,6 +201,36 @@
 		 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 		 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))))
 
+
+
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+
+;; (use-package lsp-mode
+;;   :init
+;;   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+;;          (js-mode . lsp)
+;; 	 (typescript-ts-base-mode . lsp)
+;;          ;; if you want which-key integration
+;;          (lsp-mode . lsp-enable-which-key-integration))
+;;   :commands lsp)
+
+;; ;; optionally
+;; (use-package lsp-ui :commands lsp-ui-mode)
+;; ;; if you are helm user
+;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+;; ;;(add-hook 'typescript-ts-base-mode-hook 'lsp)
+
+(add-hook 'js-ts-mode-hook 'eglot-ensure)
+(add-hook 'js-jsx-mode-hook 'eglot-ensure)
+(add-hook 'typescript-ts-base-mode-hook 'eglot-ensure)
+
+
+
 (use-package zenburn-theme
   :ensure t
   :config (progn (load-theme 'zenburn)
@@ -263,3 +240,41 @@
 
 (load "motion-and-kill-dwim")
 (load "motion-and-kill-dwim-key-binding")
+
+(defhydra smartparens-hydra ()
+            "Smartparens"
+            ("d" sp-down-sexp "Down")
+            ("e" sp-up-sexp "Up")
+            ("u" sp-backward-up-sexp "Backward Up")
+            ("a" sp-backward-down-sexp "Backward Down")
+            ("f" sp-forward-sexp "Forward")
+            ("b" sp-backward-sexp "Backward")
+	    ("n" sp-next-sexp "Next")
+	    ("p" sp-previous-sexp "Previous")
+            ("k" sp-kill-sexp "Kill" :color blue)
+            ("q" nil "Quit" :color blue))
+
+
+
+(use-package smart-mode-line
+  :ensure t
+  :config (progn
+	    (setq sml/theme 'respectful)
+	    (smart-mode-line-enable)
+	    ))
+
+(use-package prescient
+  :ensure t)
+(use-package ivy-prescient
+  :ensure t)
+(use-package company-prescient
+  :ensure t)
+
+(use-package projectile
+  :ensure t
+  :config (progn
+	    (projectile-mode +1)
+	    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+
+;;; end of doc
+
